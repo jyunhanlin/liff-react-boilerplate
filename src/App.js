@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import useLiff from './lib/liff';
+import useLiff from './hooks/useLiff';
 
 function App() {
   const liffHook = useLiff();
