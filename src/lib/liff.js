@@ -2,25 +2,45 @@
 import { useState, useEffect } from 'react';
 
 const liff = window.liff;
+const liffId = process.env.REACT_APP_LIFF_ID;
 
-function useLiffProfile(liffId) {
-  const [profile, setProfile] = useState(null);
-
+function useLiff() {
+  const [initDone, setInit] = useState(false);
   useEffect(() => {
-    const getLiffProfile = async () => {
-      await liff.init({ liffId });
-      if (liff.isLoggedIn()) {
-        const newProfile = await liff.getProfile();
-        setProfile(newProfile);
-      } else {
-        liff.login();
+    const liffInit = async () => {
+      try {
+        await liff.init({ liffId });
+        setInit(true);
+      } catch (e) {
+        console.log('please fill in your liff id');
       }
     };
-
-    getLiffProfile();
+    liffInit();
   }, []);
 
-  return profile;
+  const login = redirectUri => {
+    const loginConfig = {};
+    if (redirectUri) loginConfig.redirectUri = redirectUri;
+    liff.login(loginConfig);
+  };
+
+  const getProfile = async () => {
+    if (liff.isLoggedIn()) return await liff.getProfile();
+    return login();
+  };
+
+  const getDecodedIDToken = async () => {
+    if (liff.isLoggedIn()) return await liff.getDecodedIDToken();
+    return login();
+  };
+
+  return initDone
+    ? {
+        login,
+        getProfile,
+        getDecodedIDToken,
+      }
+    : null;
 }
 
-export default useLiffProfile;
+export default useLiff;

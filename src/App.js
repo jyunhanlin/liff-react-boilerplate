@@ -2,11 +2,11 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import useLiffProfile from './lib/liff';
+import useLiff from './lib/liff';
 
 function App() {
-  const profile = useLiffProfile(process.env.REACT_APP_LIFF_ID);
-  console.log(profile);
+  const liffHook = useLiff();
+  console.log(liffHook);
 
   return (
     <div className="App">
