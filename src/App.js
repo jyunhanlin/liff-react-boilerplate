@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import useLiff from './hooks/useLiff';
+import { liffContext } from './hooks/useLiff';
 
 function App() {
-  const liffHook = useLiff();
-  console.log(liffHook);
+  const liffCxt = useContext(liffContext);
+  console.log(liffCxt);
 
   return (
     <div className="App">

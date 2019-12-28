@@ -1,10 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 
 const liff = window.liff;
 const liffId = process.env.REACT_APP_LIFF_ID;
 
-function useLiff() {
+export const liffContext = createContext();
+
+export function ProvideLiff({ children }) {
+  const liffHook = useLiff();
+  const [liffProfile, setLiffProfile] = useState();
+  if (liffHook) {
+    liffHook.getProfile().then(setLiffProfile);
+  }
+  return (
+    <liffContext.Provider value={{ ...liffHook, liffProfile }}>{children}</liffContext.Provider>
+  );
+}
+
+export function useLiff() {
   const [initDone, setInit] = useState(false);
   useEffect(() => {
     const liffInit = async () => {
@@ -42,5 +55,3 @@ function useLiff() {
       }
     : null;
 }
-
-export default useLiff;
