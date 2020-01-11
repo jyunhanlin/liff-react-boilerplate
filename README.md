@@ -2,7 +2,7 @@
 
 this project includes the followings
 
-- prettier
+- eslint + prettier
 - husky
 - docker
 - custom react hook for liff (WIP)
