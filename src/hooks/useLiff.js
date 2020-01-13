@@ -9,9 +9,15 @@ export const liffContext = createContext();
 export function ProvideLiff({ children }) {
   const liffHook = useLiff();
   const [liffProfile, setLiffProfile] = useState();
-  if (liffHook) {
-    liffHook.getProfile().then(setLiffProfile);
-  }
+  useEffect(() => {
+    const getLiffProfile = async () => {
+      if (liffHook && !liffProfile) {
+        const profile = await liffHook.getProfile();
+        setLiffProfile(profile);
+      }
+    };
+    getLiffProfile();
+  }, [liffHook, liffProfile]);
   return (
     <liffContext.Provider value={{ ...liffHook, liffProfile }}>{children}</liffContext.Provider>
   );
