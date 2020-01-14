@@ -6,14 +6,18 @@ const liffId = process.env.REACT_APP_LIFF_ID;
 
 export const liffContext = createContext();
 
-export function ProvideLiff({ children }) {
+export function ProviderLiff({ children }) {
   const liffHook = useLiff();
   const [liffProfile, setLiffProfile] = useState();
   useEffect(() => {
     const getLiffProfile = async () => {
       if (liffHook && !liffProfile) {
-        const profile = await liffHook.getProfile();
-        setLiffProfile(profile);
+        try {
+          const profile = await liffHook.getProfile();
+          setLiffProfile(profile);
+        } catch (e) {
+          console.log(e);
+        }
       }
     };
     getLiffProfile();
@@ -45,16 +49,17 @@ export function useLiff() {
 
   const getProfile = async () => {
     if (liff.isLoggedIn()) return await liff.getProfile();
-    return login();
+    throw new Error('please login your line account first');
   };
 
   const getDecodedIDToken = async () => {
     if (liff.isLoggedIn()) return await liff.getDecodedIDToken();
-    return login();
+    throw new Error('please login your line account first');
   };
 
   return initDone
     ? {
+        liff,
         login,
         getProfile,
         getDecodedIDToken,

@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { ProvideLiff } from './hooks/useLiff';
+import { ProviderLiff } from './hooks/useLiff';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <ProvideLiff>
+  <ProviderLiff>
     <App />
-  </ProvideLiff>,
+  </ProviderLiff>,
   document.getElementById('root')
 );
 
